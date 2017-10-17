@@ -42,10 +42,12 @@ public class MySqlStudentDao implements StudentDao {
      private PreparedStatement updateSubject = null;
        private PreparedStatement deleteStudent = null;
         private PreparedStatement deleteSubject = null;
-        
+    
+        private String db = null;
     
 private void loadProperties(Properties property) throws PersistException{
 InputStream fis = null;
+
 try {
 fis = MySqlStudentDao.class.getResourceAsStream("/config.properties");
 property.load(fis);
@@ -60,10 +62,43 @@ throw new PersistException("Не могу закрыть соединение c 
 }
 }
 }
+private void loadTestProperties(Properties property) throws PersistException{
+InputStream fis = null;
+try {
+fis = MySqlStudentDao.class.getResourceAsStream("/configtest.properties");
+property.load(fis);
+} catch (IOException ex) {
+throw new PersistException("Файл свойств не найден" + ex.toString());
+}finally{
+if(fis!=null)
+try{
+fis.close();
+}catch(Exception e){
+throw new PersistException("Не могу закрыть соединение c файлом свойств" + e.toString());
+}
+}
+}
 public MySqlStudentDao() throws PersistException {
 Properties property = new Properties();
+db = "daotalk";
 try {
 loadProperties(property);
+Class.forName(property.getProperty("driver"));
+connection = DriverManager.getConnection(property.getProperty("url"), property.getProperty("user"), property.getProperty("password"));
+} catch (ClassNotFoundException e) {
+e.printStackTrace();
+throw new PersistException("Не могу зарегестрировать драйвер",e);
+}
+catch (SQLException e) {
+throw new PersistException("Не удается подключиться к базе данных" + e.toString());
+}
+}
+
+public MySqlStudentDao(String test) throws PersistException {
+Properties property = new Properties();
+db = "testdaotalk";
+try {
+loadTestProperties(property);
 Class.forName(property.getProperty("driver"));
 connection = DriverManager.getConnection(property.getProperty("url"), property.getProperty("user"), property.getProperty("password"));
 } catch (ClassNotFoundException e) {
@@ -77,74 +112,74 @@ throw new PersistException("Не удается подключиться к ба
 }
      
 private String getMarkIdSelectQuery() {
-    return "SELECT mark FROM daotalk.mark WHERE id = ?;";
+    return "SELECT mark FROM "+db+".mark WHERE id = ?;";
 }
 
 private String getStudentIdSelectQuery() {
-    return "SELECT surname FROM daotalk.student WHERE id = ?;";
+    return "SELECT surname FROM "+db+".student WHERE id = ?;";
 }
 private String getSubjectIdSelectQuery() {
-    return "SELECT subject FROM daotalk.subject WHERE id = ?;";
+    return "SELECT subject FROM "+db+".subject WHERE id = ?;";
 }
 
 
 private String getSelectQuery() {
-    return "SELECT id, name, surname FROM daotalk.student";
+    return "SELECT id, name, surname FROM "+db+".student";
 }
 private String getCreateQuery() {
-        return "INSERT INTO daotalk.mark (student_id, subject_id, mark) \n" +
+        return "INSERT INTO "+db+".mark (student_id, subject_id, mark) \n" +
                 "VALUES (?, ?, ?);";
     }  
 
 private String getCreateQuerySubject(){
-return "INSERT INTO daotalk.subject (subject) VALUES (? );";
+return "INSERT INTO "+db+".subject (subject) VALUES (? );";
 }
 
 private String getCreateQueryStudent(){
-return "INSERT INTO daotalk.student (name, surname) VALUES (?, ?);";
+return "INSERT INTO "+db+".student (name, surname) VALUES (?, ?);";
 }
 private String getUpdateQuery() {
-        return "UPDATE daotalk.mark SET student_id = ?, subject_id = ?, mark = ? WHERE id = ?;";
+        return "UPDATE "+db+".mark SET student_id = ?, subject_id = ?, mark = ? WHERE id = ?;";
     }
 private String getUpdateStudentQuery(){
-return"UPDATE daotalk.student SET name = ?, surname = ? WHERE id = ?;";
+return"UPDATE "+db+".student SET name = ?, surname = ? WHERE id = ?;";
 }
 private String getUpdateSubjectQuery(){
-    return"UPDATE daotalk.subject SET subject = ? WHERE id = ?;";
+    return"UPDATE "+db+".subject SET subject = ? WHERE id = ?;";
 }
 
 private String getDeleteQuery() {
-        return "DELETE FROM daotalk.mark WHERE id = ?;";
+        return "DELETE FROM "+db+".mark WHERE id = ?;";
     }
 
 private String getDeleteStudentQuery(){
-return"DELETE FROM daotalk.student WHERE id = ?;";
+return"DELETE FROM "+db+".student WHERE id = ?;";
 }
 
 private String getDleteSubjectQuery(){
-return"DELETE FROM daotalk.subject WHERE id = ?;";
+return"DELETE FROM "+db+".subject WHERE id = ?;";
 }
 
 private String getSelectQuerySubj() {
-      return "SELECT id, subject FROM daotalk.subject;";
+      return "SELECT id, subject FROM "+db+".subject;";
 }
 
 private String getSelectQuerySubjMark() {
-      return "SELECT M.id, M.student_id, M.subject_id, S.name, S.surname, SB.subject, M.mark  FROM daotalk.mark M \n" +
-"INNER JOIN daotalk.student S  ON S.ID = M.student_id\n" +
-"INNER JOIN daotalk.subject SB ON SB.ID = M.subject_id \n" +
+      return "SELECT M.id, M.student_id, M.subject_id, S.name, S.surname, SB.subject, M.mark  FROM "+db+".mark M \n" +
+"INNER JOIN "+db+".student S  ON S.ID = M.student_id\n" +
+"INNER JOIN "+db+".subject SB ON SB.ID = M.subject_id \n" +
 "WHERE student_id = ?;";
 }
 
 private String getSelectQuerySubjMarkAll(){
-return "SELECT M.id, S.name, S.surname, SB.subject, M.mark FROM daotalk.mark M \n" +
-"INNER JOIN daotalk.student S  ON S.ID = M.student_id\n" +
-"INNER JOIN daotalk.subject SB ON SB.ID = M.subject_id\n" +
+return "SELECT M.id, S.name, S.surname, SB.subject, M.mark FROM "+db+".mark M \n" +
+"INNER JOIN "+db+".student S  ON S.ID = M.student_id\n" +
+"INNER JOIN "+db+".subject SB ON SB.ID = M.subject_id\n" +
 "ORDER BY S.surname;";
 }
 private String getSelectQueryPage() {
        
-    return "SELECT SQL_CALC_FOUND_ROWS id, name, surname FROM daotalk.student limit ?, ?;";
+    return "SELECT SQL_CALC_FOUND_ROWS id, name, surname FROM "+db+".student limit ?, ?;";
 }
 
 private void initUpdateStudent() throws SQLException {
@@ -849,6 +884,34 @@ if(err == null)
 if(createStudent != null){
 try{
 createStudent.close();
+}catch(Exception e){
+if(err == null)
+   err = e; 
+}}
+if(updateStudent != null){
+try{
+updateStudent.close();
+}catch(Exception e){
+if(err == null)
+   err = e; 
+}}
+if(updateSubject != null){
+try{
+updateSubject.close();
+}catch(Exception e){
+if(err == null)
+   err = e; 
+}}
+if(deleteStudent != null){
+try{
+deleteStudent.close();
+}catch(Exception e){
+if(err == null)
+   err = e; 
+}}
+if(deleteSubject != null){
+try{
+deleteSubject.close();
 }catch(Exception e){
 if(err == null)
    err = e; 

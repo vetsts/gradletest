@@ -2,13 +2,6 @@
 
 <%@ page contentType="text/html; charset=UTF-8" %>
 
-<%@ page import="java.util.*" %>
-<%@ page import="java.io.*" %>
-<%@ page import="students.daopattern.dao.*" %>
-<%@ page import="students.daopattern.dto.*" %>
-<%@ page import="students.daopattern.mysql.*" %>
-
-
 
 <!DOCTYPE html>
 <html>
@@ -56,7 +49,7 @@
 	
     
 	<c:if test="${markId != null && markDeleted == null}">
-		<c:redirect url = "http://localhost:8080/studentsApp/edit?markId=${markId}"/>
+		<c:redirect url = "http://localhost:8080/TestGradle/edit?markId=${markId}"/>
 	</c:if>
 	<c:if test = "${valUpdate != null }">
          <p><c:out value = "${studMark}"/><p>

@@ -51,7 +51,7 @@
  </table>
  
 <c:if test="${value != null}">
-		<c:redirect url = "http://localhost:8080/studentsApp/subjectadd"/>
+		<c:redirect url = "http://localhost:8080/TestGradle/subjectadd"/>
 	</c:if>
 	<c:if test = "${subjectnm != null}">
          <p><c:out value = "${subjectnm}"/><p>

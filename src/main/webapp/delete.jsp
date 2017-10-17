@@ -45,7 +45,7 @@
          <p><c:out value = "${markDeleted}"/><p>
       </c:if>
 	   <c:if test="${studentIdRedirect != null}">
-		<c:redirect url = "http://localhost:8080/studentsApp/update?studentId=${studentIdRedirect}"/>
+		<c:redirect url = "http://localhost:8080/TestGradle/update?studentId=${studentIdRedirect}"/>
 	</c:if> 
 <br>
  

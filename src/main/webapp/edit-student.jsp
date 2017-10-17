@@ -2,12 +2,6 @@
 
 <%@ page contentType="text/html; charset=UTF-8" %>
 
-<%@ page import="java.util.*" %>
-<%@ page import="java.io.*" %>
-<%@ page import="students.daopattern.dao.*" %>
-<%@ page import="students.daopattern.dto.*" %>
-<%@ page import="students.daopattern.mysql.*" %>
-
 
 <!DOCTYPE html>
 <html>
@@ -48,7 +42,7 @@
  <input type ="submit" value ="Обновить студента" /></form>
 
       <c:if test="${value != null}">
-		<c:redirect url = "http://localhost:8080/studentsApp/edit-student"/>
+		<c:redirect url = "http://localhost:8080/TestGradle/edit-student"/>
 	</c:if>
   <c:if test = "${namest != null}">
          <p><c:out value = "${namest}"/><p>

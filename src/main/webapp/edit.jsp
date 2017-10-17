@@ -94,7 +94,7 @@
 	 <input name = markId type = hidden value = "${markId}">
     <input type="submit" value="Редактировать" /></form>
  <c:if test="${value != null}">
-		<c:redirect url = "http://localhost:8080/studentsApp/update"/>
+		<c:redirect url = "http://localhost:8080/TestGradle/update?studentId=${studentId}"/>
 	</c:if>
 
       <c:if test = "${stId != null}">

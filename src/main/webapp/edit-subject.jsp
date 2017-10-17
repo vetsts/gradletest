@@ -2,13 +2,6 @@
 
 <%@ page contentType="text/html; charset=UTF-8" %>
 
-<%@ page import="java.util.*" %>
-<%@ page import="java.io.*" %>
-<%@ page import="students.daopattern.dao.*" %>
-<%@ page import="students.daopattern.dto.*" %>
-<%@ page import="students.daopattern.mysql.*" %>
-
-
 <!DOCTYPE html>
 <html>
  <head>
@@ -46,7 +39,7 @@
  <p>Введите предмет: <input type = "text" value ="" name = "subjectName"></p>
  <input type = "submit" value = "Редактировать предмет" /></form>
 <c:if test="${value != null}">
-		<c:redirect url = "http://localhost:8080/studentsApp/subjects"/>
+		<c:redirect url = "http://localhost:8080/TestGradle/subjects"/>
 	</c:if>
 	<c:if test = "${subjectnm != null}">
          <p><c:out value = "${subjectnm}"/><p>

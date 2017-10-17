@@ -6,22 +6,22 @@ import com.students.daopattern.dao.PersistException;
 import com.students.daopattern.dao.StudentDao;
 import com.students.daopattern.dto.Mark;
 import java.util.List;
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
 public class TestDao {
-    private StudentDao stud = null;
+    private static StudentDao stud = null;
     
-    @Before
-    public void connectDao() throws Exception {
-        stud = new MySqlStudentDao();
+    @BeforeClass
+    public static void connectDao() throws Exception {
+        stud = new MySqlStudentDao("test");
     }
 
-    @After
-    public void closeDao() throws Exception {
+    @AfterClass
+    public static void closeDao() throws Exception {
         stud.close();
     }
 

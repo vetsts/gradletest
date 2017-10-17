@@ -272,9 +272,10 @@ private void studentAdd(HttpServletRequest req, HttpServletResponse resp) throws
  req.setAttribute("value", value);
  
  try{
-     int markId = 0;
+      
+     int markId = Integer.parseInt(markIdd);
      if((studentIdd == null && subjectIdd == null && markd == null) &&(markIdd != null)){
-      markId = Integer.parseInt(markIdd);
+     
          checkMarkStudentSubject(markId,0,0,req);
      }
      if(studentIdd != null && subjectIdd != null && markd != null){
@@ -284,8 +285,6 @@ private void studentAdd(HttpServletRequest req, HttpServletResponse resp) throws
  req.setAttribute("studentId", studentId);
  req.setAttribute("subjectId", subjectId);
  req.setAttribute("mark", mark);
- 
- 
  req.setAttribute("markId", markId);
  TestMark testMark = getStudentDao(req).getTestMark(markId);
  TestMark testStudent = getStudentDao(req).getTestStudent(studentId);

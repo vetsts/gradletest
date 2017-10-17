@@ -47,7 +47,7 @@
  <input type ="submit" value ="Добавить студента" /></form>
 
       <c:if test="${value != null}">
-		<c:redirect url = "http://localhost:8080/studentsApp/studentadd"/>
+		<c:redirect url = "http://localhost:8080/TestGradle/studentadd"/>
 	</c:if>
   <c:if test = "${namest != null}">
          <p><c:out value = "${namest}"/><p>
